@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"pertemuan4-backend/config"
 	"pertemuan4-backend/model"
 )
@@ -10,7 +11,6 @@ func GetAllMahasiswa() ([]model.Mahasiswa, error) {
 	var data []model.Mahasiswa
 	result := config.GetDB().Find(&data)
 	return data, result.Error
-
 }
 
 // Insert mahasiswa baru
@@ -20,19 +20,21 @@ func InsertMahasiswa(mhs *model.Mahasiswa) (*model.Mahasiswa, error) {
 }
 
 // Ambil satu data mahasiswa berdasarkan NPM
-func GetMahasiswaByNPM(npm string) (model.Mahasiswa, error) {
+func GetMahasiswaByNPM(npm int64) (model.Mahasiswa, error) {
 	var mhs model.Mahasiswa
-	result := config.GetDB().First(&mhs, "npm = ?", npm)
+	npmStr := fmt.Sprintf("%d", npm)
+	result := config.GetDB().First(&mhs, "npm = ?", npmStr)
 	return mhs, result.Error
 }
 
 // Update data mahasiswa berdasarkan NPM
-func UpdateMahasiswa(npm string, newData *model.Mahasiswa) (*model.Mahasiswa, error) {
+func UpdateMahasiswa(npm int64, newData *model.Mahasiswa) (*model.Mahasiswa, error) {
 	var mhs model.Mahasiswa
 
 	db := config.GetDB()
 
-	if err := db.First(&mhs, "npm = ?", npm).Error; err != nil {
+	npmStr := fmt.Sprintf("%d", npm)
+	if err := db.First(&mhs, "npm = ?", npmStr).Error; err != nil {
 		return nil, err
 	}
 
@@ -44,7 +46,8 @@ func UpdateMahasiswa(npm string, newData *model.Mahasiswa) (*model.Mahasiswa, er
 }
 
 // Hapus data mahasiswa berdasarkan NPM
-func DeleteMahasiswa(npm string) error {
-	result := config.GetDB().Where("npm = ?", npm).Delete(&model.Mahasiswa{})
+func DeleteMahasiswa(npm int64) error {
+	npmStr := fmt.Sprintf("%d", npm)
+	result := config.GetDB().Where("npm = ?", npmStr).Delete(&model.Mahasiswa{})
 	return result.Error
 }
