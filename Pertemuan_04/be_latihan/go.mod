@@ -1,4 +1,4 @@
-module pertemuan4-backend
+module be_latihan
 
 go 1.25.0
 

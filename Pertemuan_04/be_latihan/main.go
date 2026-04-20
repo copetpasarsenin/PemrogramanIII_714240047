@@ -1,9 +1,9 @@
 package main
 
 import (
-	"pertemuan4-backend/config"
-	"pertemuan4-backend/model"
-	"pertemuan4-backend/router"
+	"be_latihan/config"
+	"be_latihan/model"
+	"be_latihan/router"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"

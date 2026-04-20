@@ -2,8 +2,8 @@ package repository
 
 import (
 	"fmt"
-	"pertemuan4-backend/config"
-	"pertemuan4-backend/model"
+	"be_latihan/config"
+	"be_latihan/model"
 )
 
 // Ambil semua data mahasiswa

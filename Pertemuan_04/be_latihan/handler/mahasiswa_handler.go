@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"pertemuan4-backend/model"
-	"pertemuan4-backend/repository"
+	"be_latihan/model"
+	"be_latihan/repository"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"

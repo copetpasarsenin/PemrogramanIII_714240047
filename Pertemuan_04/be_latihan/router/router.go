@@ -1,8 +1,8 @@
 package router
 
 import (
-	"pertemuan4-backend/handler"
-	"pertemuan4-backend/model"
+	"be_latihan/handler"
+	"be_latihan/model"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,7 +10,7 @@ import (
 func SetupRoutes(app *fiber.App) {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.JSON(model.Response{
-			Message: "API Pertemuan4-backend aktif",
+			Message: "API Be_Latihan aktif",
 		})
 	})
 
