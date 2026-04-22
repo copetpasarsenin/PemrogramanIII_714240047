@@ -13,7 +13,7 @@ import (
 
 func main() {
 	app := fiber.New()
-	
+
 	// Basic CORS
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: strings.Join(config.GetAllowedOrigins(), ","),
