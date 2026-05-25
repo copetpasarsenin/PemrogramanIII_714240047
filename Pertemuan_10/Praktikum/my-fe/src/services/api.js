@@ -16,6 +16,12 @@ const api = axios.create({
 });
 
 function normalizeError(error, fallback = "Terjadi kesalahan") {
+  if (error.response?.data?.errors) {
+    const errorDetails = Object.values(error.response.data.errors)
+      .flat()
+      .join(", ");
+    return `${error.response?.data?.message || "Validasi gagal"}: ${errorDetails}`;
+  }
   return error.response?.data?.message || error.message || fallback;
 }
 
