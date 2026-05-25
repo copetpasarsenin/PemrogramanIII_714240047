@@ -104,7 +104,7 @@ export default function MahasiswaFormPage({ mode }) {
       setError("");
       const payload = {
         ...form,
-        npm: form.npm,
+        npm: Number(form.npm),
       };
 
       if (isEdit) {
