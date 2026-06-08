@@ -114,3 +114,64 @@ func Login(c *fiber.Ctx) error {
 		},
 	})
 }
+func ChangePassword(c *fiber.Ctx) error {
+	username, ok := c.Locals("username").(string)
+	if !ok || username == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(model.Response{
+			Message: "user belum login",
+		})
+	}
+
+	var payload model.ChangePasswordRequest
+	if err := c.BodyParser(&payload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(model.Response{
+			Message: "payload tidak valid",
+			Error:   err.Error(),
+		})
+	}
+
+	if payload.OldPassword == "" || payload.NewPassword == "" || payload.ConfirmPassword == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(model.Response{
+			Message: "password lama, password baru, dan konfirmasi wajib diisi",
+		})
+	}
+
+	if payload.NewPassword != payload.ConfirmPassword {
+		return c.Status(fiber.StatusBadRequest).JSON(model.Response{
+			Message: "konfirmasi password baru tidak sama",
+		})
+	}
+
+	user, err := repository.FindUserByUsername(username)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(model.Response{
+			Message: "gagal mencari user",
+			Error:   err.Error(),
+		})
+	}
+
+	if !password.CheckPasswordHash(payload.OldPassword, user.Password) {
+		return c.Status(fiber.StatusUnauthorized).JSON(model.Response{
+			Message: "password lama salah",
+		})
+	}
+
+	hashedPassword, err := password.HashPassword(payload.NewPassword)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(model.Response{
+			Message: "gagal membuat hash password",
+			Error:   err.Error(),
+		})
+	}
+
+	if err := repository.UpdateUserPassword(username, hashedPassword); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(model.Response{
+			Message: "gagal mengubah password",
+			Error:   err.Error(),
+		})
+	}
+
+	return c.JSON(model.Response{
+		Message: "password berhasil diubah",
+	})
+}

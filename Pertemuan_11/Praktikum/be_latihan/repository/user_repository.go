@@ -15,3 +15,7 @@ func InsertUser(user *model.User) (*model.User, error) {
 	result := config.GetDB().Create(user)
 	return user, result.Error
 }
+func UpdateUserPassword(username, hashedPassword string) error {
+	result := config.GetDB().Model(&model.User{}).Where("username = ?", username).Update("password", hashedPassword)
+	return result.Error
+}

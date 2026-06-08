@@ -17,6 +17,7 @@ func SetupRoutes(app *fiber.App) {
 
 	app.Post("/register", handler.Register)
 	app.Post("/login", handler.Login)
+	app.Put("/change-password", middleware.JWTProtected(""), handler.ChangePassword)
 
 	mahasiswa := app.Group("/api/mahasiswa", middleware.JWTProtected("admin"))
 	mahasiswa.Get("/", handler.GetAllMahasiswa)
